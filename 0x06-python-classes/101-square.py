@@ -1,4 +1,3 @@
-#!/bin/usr/python3
 class Square:
     def __init__(self, size=0, position=(0, 0)):
         self.size = size
@@ -10,8 +9,10 @@ class Square:
 
     @size.setter
     def size(self, value):
-        if not isinstance(value, int) or value < 0:
-            raise ValueError("size must be a non-negative integer")
+        if not isinstance(value, int):
+            raise TypeError("size must be an integer")
+        if value < 0:
+            raise ValueError("size must be >= 0")
         self.__size = value
 
     @property
@@ -21,8 +22,9 @@ class Square:
     @position.setter
     def position(self, value):
         if not isinstance(value, tuple) or len(value) != 2 or \
-                not all(isinstance(v, int) and v >= 0 for v in value):
-            raise ValueError("position must be a tuple of 2 positive integers")
+                not all(isinstance(v, int) for v in value) or \
+                not all(v >= 0 for v in value):
+            raise TypeError("position must be a tuple of 2 positive integers")
         self.__position = value
 
     def area(self):
