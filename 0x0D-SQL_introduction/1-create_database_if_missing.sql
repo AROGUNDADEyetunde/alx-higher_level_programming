@@ -4,6 +4,7 @@ import mysql.connector
 host = 'localhost'  # Change to your MySQL host if necessary
 user = 'your_username'  # Change to your MySQL username
 password = 'your_password'  # Change to your MySQL password
+database = 'hbtn_0c_0'  # Database name to create
 
 try:
     # Connect to MySQL server
@@ -16,23 +17,17 @@ try:
     # Create cursor object
     cursor = connection.cursor()
 
-    # Execute SQL query to get list of databases
-    cursor.execute("SHOW DATABASES")
+    # Execute SQL query to create the database
+    cursor.execute("CREATE DATABASE IF NOT EXISTS {}".format(database))
 
-    # Fetch all rows
-    databases = cursor.fetchall()
-
-    # Print list of databases
-    print("List of databases:")
-    for db in databases:
-        print(db[0])
+    print("Database '{}' created successfully.".format(database))
 
 except mysql.connector.Error as err:
     print("Error:", err)
 
 finally:
     # Close connection
-    if connection.is_connected():
+    if 'connection' in locals() and connection.is_connected():
         cursor.close()
         connection.close()
         print("MySQL connection is closed")
